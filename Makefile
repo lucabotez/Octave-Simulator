@@ -1,4 +1,4 @@
-# Copyright 2020 Darius Neatu <neatudarius@gmail.com>
+# Copyright @lucabotez
 
 # compiler setup
 CC=gcc
@@ -10,10 +10,7 @@ TARGETS=$(OBJS:%.o=%)
 
 build: $(OBJS) $(TARGETS)
 
-pack:
-	zip -FSr 314CA_BotezLuca_Tema2.zip README Makefile *.c *.h
-
 clean:
 	rm -f $(TARGETS) $(OBJS)
 
-.PHONY: pack clean
+.PHONY: clean
