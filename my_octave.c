@@ -6,16 +6,16 @@
 
 #define MAX 10007
 
-// variabilele de tip temp_ (***temp_a, **temp_result) sunt matrici/
-// colectii de matrici temporare folosite in interiorul functiilor,
-// fiind copii/realocari
+// temp variables (***temp_a, **temp_result) are temporary matrices /
+// collections of matrices used in functions, being copies or reallocations
 
-// a = colectia de matrici, vl = vectorul de linii, vc = vectorul de coloane
-// s = dimensiunea colectiei de matrici
-// number, n, n1, n2 = indici ai matricilor pe care se realizeaza operatii
+// a = the collection of matrices
+// vl = line array
+// vc = column array
+// s = number of elements in the collection
+// number, n, n1, n2 = indices of matrices on whcih operations are performed
 
-// functie folosita pentru inmultirea matricilor in cadrul ridicarii
-// la putere, matricile fiind patratice, de aceeasi dimensiune
+// function used to multiply square matrices of same size
 void p_multiplication(int ***result, int **m1, int **m2, int size)
 {
 	int i, j, k;
@@ -34,16 +34,15 @@ void p_multiplication(int ***result, int **m1, int **m2, int size)
 	}
 }
 
-// functia pune 0 pe toate pozitiile matricei m2, iar in functie
-// de caracterul c pune elementele matricei unitate in m1 (la
-// inceputul functiei raise_matrix) sau copiaza continutul lui m2
-// in m1 (pe parcursul calculului puterii)
+// function that initializes matrix m2 with zeros, and matrix m1
+// with the elements of the identity matrix or copies of values
+// in m2, depending on the character c
 void set_matrix_values(int ***m1, int ***m2, int size, char c)
 {
 	int i, j;
 	int **temp_m1 = *m1, **temp_m2 = *m2;
 
-	if (c == 'I') { // temp_m1 devine matricea unitate
+	if (c == 'I') { // temp_m1 becomes identity matrix
 		for (i = 0; i < size; i++)
 			for (j = 0; j < size; j++) {
 				if (i == j)
@@ -52,7 +51,7 @@ void set_matrix_values(int ***m1, int ***m2, int size, char c)
 					temp_m1[i][j] = 0;
 				temp_m2[i][j] = 0;
 			}
-	} else {        // temp_m1 devine temp_m2
+	} else {        // temp_m1 becomes temp_m2
 		for (i = 0; i < size; i++)
 			for (j = 0; j < size; j++) {
 				temp_m1[i][j] = temp_m2[i][j];
@@ -61,9 +60,9 @@ void set_matrix_values(int ***m1, int ***m2, int size, char c)
 	}
 }
 
-// functia aloca dinamic o colectie de matrice si
-// doi vectori in care vor fi stocate liniile si
-// coloanele matricilor
+// function that dynamically allocates a matrix collection
+// and 2 arrays in which the lines and columns of the matrices
+// will be stored
 void alloc_arrays(int ****a, int **vl, int **vc)
 {
 	*a = (int ***)malloc(1 * sizeof(int **));
@@ -84,7 +83,7 @@ void alloc_arrays(int ****a, int **vl, int **vc)
 	}
 }
 
-// functia elibereaza toata memoria alocata
+// function that frees all the allocated memory
 void free_all(int s, int ***a, int *vl, int *vc)
 {
 	int i, j;
@@ -99,7 +98,7 @@ void free_all(int s, int ***a, int *vl, int *vc)
 	free(vc);
 }
 
-// functia sterge o matrice din colectia de matrici
+// function that deletes a matrix from the collection
 void free_matrix(int *s, int ****a, int **vl, int **vc)
 {
 	int i, n;
@@ -135,7 +134,7 @@ void free_matrix(int *s, int ****a, int **vl, int **vc)
 	*vc = temp_c2;
 }
 
-// functia adauga o matrice in colectia de matrici
+// function that adds a matrix in the collection
 void read_matrix(int s, int ****a, int **vl, int **vc)
 {
 	int ***temp_a, *temp_l, *temp_c;
@@ -189,8 +188,7 @@ void read_matrix(int s, int ****a, int **vl, int **vc)
 	*a = temp_a;
 }
 
-// functia afiseaza dimensiunile unei matrici
-// stocata
+// function that prints the dimensions of a stored matrix
 void print_dimensions(int s, int *vl, int *vc)
 {
 	int n;
@@ -204,7 +202,7 @@ void print_dimensions(int s, int *vl, int *vc)
 	printf("%d %d\n", vl[n], vc[n]);
 }
 
-// functia afiseaza o matrice din colectie
+// function that prints a matrix from the collection
 void print_matrix(int s, int ***a, int *vl, int *vc)
 {
 	int i, j, n;
@@ -222,7 +220,7 @@ void print_matrix(int s, int ***a, int *vl, int *vc)
 	}
 }
 
-// functia redimensioneaza o matrice
+// function that resizes a matrix
 void resize_matrix(int s, int ****a, int **vl, int **vc)
 {
 	int l, c, i, j, n;
@@ -247,18 +245,18 @@ void resize_matrix(int s, int ****a, int **vl, int **vc)
 		return;
 	}
 
-	scanf("%d", &l);  // nr de linii dupa care redimensionam
-	lines = (int *)malloc(l * sizeof(int)); // vector in care stocam liniile
-	if (!lines) {							// dupa care redimensionam
+	scanf("%d", &l);  // number of lines after which the matrix is resized
+	lines = (int *)malloc(l * sizeof(int)); // array where the lines
+	if (!lines) {							// are stored
 		free_all(s, temp_a, temp_l, temp_c);
 		exit(-1);
 	}
 	for (i = 0; i < l; i++)
 		scanf("%d", &lines[i]);
 
-	scanf("%d", &c);  // nr de coloane dupa care redimensionam
-	columns = (int *)malloc(c * sizeof(int)); // vector in care stocam coloanele
-	if (!lines) {							  // dupa care redimensionam
+	scanf("%d", &c);  // number of columns after which the matrix is resized
+	columns = (int *)malloc(c * sizeof(int)); // array where the columns
+	if (!lines) {							  // are stored
 		free(lines);
 		free_all(s, temp_a, temp_l, temp_c);
 		exit(-1);
@@ -267,7 +265,7 @@ void resize_matrix(int s, int ****a, int **vl, int **vc)
 	for (i = 0; i < c; i++)
 		scanf("%d", &columns[i]);
 
-	// matricea redimensionata
+	// resized matrix
 	new_matrix = (int **)malloc(l * sizeof(int *));
 	if (!new_matrix) {
 		free(lines);
@@ -304,7 +302,7 @@ void resize_matrix(int s, int ****a, int **vl, int **vc)
 	free(columns);
 }
 
-// functia inmulteste 2 matrici si salveaza matricea produs
+// function that multiplies 2 matrices and saves the result
 void multiply_matrix(int *s, int ****a, int **vl, int **vc)
 {
 	int i, j, k, n1, n2;
@@ -374,7 +372,8 @@ void multiply_matrix(int *s, int ****a, int **vl, int **vc)
 	*vc = temp_c;
 }
 
-// functia sorteaza matricile dupa suma elementelor
+// function that sorts the matrices in the collection by
+// the sum of their elements
 void sort_matrix(int s, int ****a, int **vl, int **vc)
 {
 	int sum, i, j, k, aux;
@@ -382,7 +381,6 @@ void sort_matrix(int s, int ****a, int **vl, int **vc)
 	int ***temp_a = *a;
 	int *temp_l = *vl;
 	int *temp_c = *vc;
-	// aux, **paux =  variabile folosite in interschimbare
 
 	vsum = (int *)malloc(s * sizeof(int));
 	if (!vsum) {
@@ -425,8 +423,8 @@ void sort_matrix(int s, int ****a, int **vl, int **vc)
 	free(vsum);
 }
 
-// functia calculeaza transpusa unei matrici si o salveaza
-// in locul matricii initiale
+// function that computes the transposed matrix and replaces the
+// original matrix in the collection
 void transpose_matrix(int s, int ****a, int **vl, int **vc)
 {
 	int i, j, aux, n;
@@ -442,7 +440,7 @@ void transpose_matrix(int s, int ****a, int **vl, int **vc)
 		return;
 	}
 
-	// matricea transpusa
+	// transpose matrix
 	new_matrix = (int **)malloc(temp_c[n] * sizeof(int *));
 	if (!new_matrix) {
 		free_all(s, temp_a, temp_l, temp_c);
@@ -476,8 +474,8 @@ void transpose_matrix(int s, int ****a, int **vl, int **vc)
 	temp_c[n] = aux;
 }
 
-// functia ridica la o putere ceruta o matrice
-// si o salveaza in locul matricii initiale
+// function that raises a matrix to a given power
+// and replaces the original matrix in the collection
 void raise_matrix(int s, int ****a, int *vl, int *vc)
 {
 	int ***temp_a = *a, **new_matrix, **aux, i, j, power, number;
@@ -564,9 +562,9 @@ void raise_matrix(int s, int ****a, int *vl, int *vc)
 int main(void)
 {
 	int ***array, *lines, *columns;
-	// array = colectia de matrici, lines/columns = liniile/columns matricilor
-	char command; // operatia ceruta
-	int size = 0; // dimensiunea colectiei de matrici
+	// array = the collection of matrices, lines/columns = matrices lines/columns
+	char command; // requested operation
+	int size = 0; // matrix collection size
 
 	alloc_arrays(&array, &lines, &columns);
 
